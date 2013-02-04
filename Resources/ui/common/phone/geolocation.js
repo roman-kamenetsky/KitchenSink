@@ -484,7 +484,11 @@ function geolocation() {
 		Titanium.Geolocation.forwardGeocoder(addr,function(evt)
 		{
 			Ti.API.info('in forward ');
-			forwardGeo.text = "lat:"+evt.latitude+", long:"+evt.longitude;
+			forwardGeo.text = Titanium.Platform.name === 'tizen' 
+				// In Tizen OS, the returned evt object has specific structure.
+				? 'lat:' + evt.places[0].latitude + ', long:' + evt.places[0].longitude 
+				: 'lat:' + evt.latitude + ', long:' + evt.longitude;
+			
 			Titanium.Geolocation.reverseGeocoder(evt.latitude,evt.longitude,function(evt)
 			{
 				if (evt.success) {
